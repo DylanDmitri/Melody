@@ -31,7 +31,7 @@ And here's an example for Advent of Code's [Report Repair](https://adventofcode.
 fn ("solve" list.int) -> int
    first combination of 2 where sum == 2020
    product
-eg. solve [1721, 979, 366, 299, 675, 1456] -> 514579
+eg. solve [1721, 979, 366, 299, 675, 1456] -> 1721 * 299
 
 read file "day1.txt" as list.int
 solve
