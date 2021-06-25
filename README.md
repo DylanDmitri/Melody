@@ -33,6 +33,7 @@ fn ("solve" list.int) -> int
    product
 eg. solve [1721, 979, 366, 299, 675, 1456] -> 1721 * 299
 
-read file "day1.txt" as list.int
+read file "day1.txt" 
+as list.int
 solve
 ```
