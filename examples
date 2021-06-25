@@ -1,0 +1,240 @@
+
+
+fn (int "multiple" of:int) -> bool
+	mod equals 0
+eg `9 multiple of 3` -> True
+
+sum 1..999 where (multiple of 3) or (multiple of 5)
+
+sum(i for i in range(1000) if multiple_of(i, 3) or multiple_of(i, 5))
+sum(i for i in range(1000) if i%3==0 or i%5==0)
+
+
+
+
+fn ("quadratic" (int a) (int b) (int c)) -> (int, int)
+	q = sqrt(b^2 - 4*a*c) / 2a
+	p = b / 2a
+	return (p+q, p-q)
+
+
+quadratic 4 10 -2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fn (int is:"prime") -> bool
+	no multiples 2..sqrt
+eg `11 is prime` -> True
+   `12 is prime` -> False
+
+
+
+
+"askfor_choice" T (\T->bool\ check) >>
+    loop 
+        choice = raw_input
+
+
+
+
+
+secret = random 1..100
+
+            
+
+
+"play_game"
+    loop "guesses" 6..1
+        print '{guess} tries left'
+
+        askfor int in valid_range
+        greater than secret |> print 'too high'
+        less than secret    |> print 'too low'
+        equal to secret     |> print 'you win', return True
+    
+    no guesses |> print 'you loose', return False
+eg with 
+    random returning [42]
+    askfor returning [50, 25, 37, 42]
+   -> prints '6 tries left'
+      prints 
+
+
+
+
+
+no multiples 2..sqrt
+
+
+def construction(self):
+					possible = [card for card in cards.values() if card.left
+							and not (card.tag==Tag.Unique and card in self.city)
+					]
+					possible.append('None')
+					choice = self.mayor.ask('Build which?', names)
+					if choice != 'None':
+							self.city.append(cards[choice])
+
+player "constructs"
+	card names where 
+		[some left, and not "already built" (unique and in city)]
+	append 'None'
+
+	ask mayor 'Build which?'
+	'None' |> return
+	lookup card, append to city
+
+	
+def constructs(self):
+	names = [name for name, card in cards.values()
+		if card.num_left and 
+		   not (already_built := card.tag==Tag.Unique and card in self.city)]
+	names.append('None')
+
+	choice = self.mayor.ask('Build which?', names)
+	if choice != 'None':
+		self.city.append(cards[choice])
+
+
+
+
+
+
+enum "card" {
+	duke
+	assassin
+	ambassador
+	captain
+	contessa
+}
+
+enum "action" {
+	income
+	foreign_aid
+	coup
+	duke
+	assassin
+	ambassador
+	captain
+}
+
+type "CardStore" =
+	map.(card -> int)
+
+struct "Player" {
+	cards: CardStore
+	coin: integer, default 3
+}
+player is:"alive" >> has some cards
+
+struct "Game" {
+	deck: CardStore
+	flipped: CardStore
+	players: List.Player
+}
+
+repeatedly loop alive players 
+	ask for action
+	callable |> call_out_round
+	blockable |> block_round
+	action.takes_effect
+	check victory
+
+to "call_out_round"
+	ask everyone for sus level (0..1 by 1/6s)
+	if sum >1, choose player randomly from distr
+	loser loses a card
+
+to "block_round"
+	target may block
+	call_out_round on target having block role
+
+
+
+
+   0.6m
+ 28 split  # initial draws
+ 28 split
+ 28 split
+ 28 split
+
+5413.6m
+ 64 split  # turn loop
+ 82 split 
+ 20 split 
+ 82 split
+629 split
+
+
+
+"dealt2" (28 split)
+	secretly + player left
+	secretly + player accross
+	secretly + player right
+	me + 1 duke, 1 duke
+	me + 1 duke, 1 captain
+	me + 1 duke, 1 assassin
+	...
+
+"pickAction" (64 split)
+	 4 = income * 4
+	 4 = foreign_aid * 4
+	 4 = duke * 4
+	 4 = ambassador * 4
+	16 = coup * 4 * 4
+	16 = assassin * 4 * 4
+	16 = captain * 4 * 4
+
+challenge (82 split)
+	cannot challenge
+	= 1
+	4 players, each (none, sus, callout)
+	= 3 * 3 * 3 * 3
+
+block (20 split)
+	4 players *
+		block w/ contessa
+		block w/ ambassador
+		block w/ captain
+		block w/ duke
+		no block
+
+challenge (82 split)
+	cannot challenge
+	= 1
+	4 players, each (none, sus, callout)
+	= 3 * 3 * 3 * 3
+
+ambassador (629 split)
+	no ambassador use
+	left player secretly
+	mid player secretly
+	right player secretly
+	you 
+		first draw (1, 2, 3, 4, 5)
+		second draw (1, 2, 3, 4, 5)
+		first replace (1, 2, 3, 4, 5)
+		second replace (1, 2, 3, 4, 5)
+
+
+
+
+vs zoe/sol/lissandra
+blade squire
+rock hopper
+unravelled eaths
+kat + blade
+2x rune weaver
+
+
