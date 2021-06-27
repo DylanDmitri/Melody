@@ -1,5 +1,4 @@
 from itertools import product
-from copy import deepcopy
 
 # mod equals 0
 
@@ -139,8 +138,9 @@ class possible:
 	yes = 5
 
 class SynthGrid:
-	def __init__(self, *atoms):
-
+	@classmethod
+	def from_atoms(cls, *atoms):
+		self = cls()
 		self.given = []
 		self.taken = []
 
@@ -157,8 +157,18 @@ class SynthGrid:
 
 		for g,t in product(self.given, self.taken):
 			self.matches[g,t] = possible.maybe
+		return self
 
-
+	def copy(self):
+		new = SynthGrid()
+		new.given = self.given
+		new.taken = self.taken
+		new.matches = {
+			gt: self.matches[gt] for gt in
+			product(self.given, self.taken)
+		}
+		return new
+	
 	"""
 	matches type
 	no loops
@@ -264,7 +274,10 @@ class SynthGrid:
 				for g in self.given:
 					self.promote(g, t)
 
+
+guesses = 0
 def solve(grid):
+	global guesses
 
 	while True:
 		prev = list(grid.matches.values())
@@ -278,30 +291,25 @@ def solve(grid):
 			# todo -- 
 			# if not all constraints satisfied
 			#    return []
-			return [grid.matches,]  # solution found
+			return {tuple(grid.matches.values()): grid}  
 
 		elif prev != now:
 			continue  # stuff is changing, try another pass
 
 		# we're stuck and need to guess
-		solutions = []
+		solutions = dict()
 		for g,t in product(grid.given, grid.taken):
 			if grid.matches[g,t] == possible.maybe:
-				cp = deepcopy(grid)
+				guesses += 1
+				cp = grid.copy()
 				cp.matches[g,t] = possible.yes
 				results = solve(cp)
 				if results:
-					solutions.extend(results)
+					solutions = solutions.update(results)
 		return solutions
 
 
 
-
-
-
-	
-				
-			
 Mod = Atom(
 	takes = [Param(int), Param(int)],
 	gives = [Param(int)],
@@ -336,8 +344,11 @@ RetVal = Atom(
 	symbol = 'r'
 )
 
-g = SynthGrid(Mod, Equals, Zero, ParamA, ParamB, RetVal)
-solve(g)
+g = SynthGrid.from_atoms(Mod, Equals, Zero, ParamA, ParamB, RetVal)
+solutions = solve(g)
+print('after', guesses, 'guesses')
+for s in solutions:
+	print(' '.join(str(i) for i in s))
 
 
 
